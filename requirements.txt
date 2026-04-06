@@ -1,0 +1,23 @@
+# ============================================================
+# LL-DSV-UNet  –  Python Dependencies
+# ============================================================
+
+# Core deep learning framework
+tensorflow>=2.12.0,<2.16.0
+
+# Data handling & preprocessing
+numpy>=1.23.0
+scikit-learn>=1.2.0
+scikit-image>=0.20.0
+Pillow>=9.4.0
+tqdm>=4.64.0
+
+# Visualisation
+matplotlib>=3.6.0
+
+# Config management
+PyYAML>=6.0
+
+# LPIPS metric (optional — requires separate PyTorch install)
+# torch>=2.0.0
+# torchmetrics>=0.11.0

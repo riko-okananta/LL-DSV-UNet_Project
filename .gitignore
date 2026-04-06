@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# Data — never commit raw datasets
+data/
+*.h5
+*.npy
+*.npz
+*.hdf5
+
+# Model weights / checkpoints
+checkpoints/
+*.ckpt
+*.pb
+saved_model/
+
+# Output assets (add selectively)
+assets/results/
+!assets/results/.gitkeep
+assets/figures/
+!assets/figures/.gitkeep
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+*.log

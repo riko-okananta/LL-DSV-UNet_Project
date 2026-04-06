@@ -1,0 +1,56 @@
+name: CI — Lint & Import Check
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint-and-import:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8
+          # Install CPU-only tensorflow (lighter for CI)
+          pip install "tensorflow-cpu>=2.12.0,<2.16.0"
+          pip install numpy scikit-learn scikit-image Pillow tqdm matplotlib PyYAML
+
+      - name: Lint with flake8
+        run: |
+          # Stop on syntax errors or undefined names; warn on style
+          flake8 lldsvunet/ scripts/ --count --select=E9,F63,F7,F82 --show-source --statistics
+          flake8 lldsvunet/ scripts/ --count --max-line-length=110 --statistics
+
+      - name: Check package imports
+        run: |
+          python -c "
+          from lldsvunet.model.blocks import RDBNet, contextual_attention, decoder_block, upsample, downsample
+          from lldsvunet.model.losses import custom_loss, mae_loss, color_loss, contrast_structure_loss
+          from lldsvunet.model.architecture import build_lldsvunet
+          from lldsvunet.data.dataset import load_images_from_directory, load_single_image
+          from lldsvunet.utils.metrics import compute_psnr, compute_ssim, convergence_score_rdp, stability_index
+          from lldsvunet.utils.visualization import plot_sample_pairs, plot_training_curves
+          print('All imports OK')
+          "
+
+      - name: Verify model builds
+        run: |
+          python -c "
+          from lldsvunet.model.architecture import build_lldsvunet
+          model = build_lldsvunet(input_shape=(128, 128, 3))
+          print(f'Model built: {model.count_params():,} parameters')
+          "

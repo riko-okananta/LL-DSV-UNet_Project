@@ -1,0 +1,73 @@
+# ============================================================
+# LL-DSV-UNet  –  Default Training Configuration
+# ============================================================
+# Edit this file to customise your training run.
+# All values here match the original paper / Kaggle experiment.
+# ============================================================
+
+seed: 42
+
+# ------------------------------------------------------------
+# Data
+# ------------------------------------------------------------
+data:
+  # Root directory of the LOL dataset.
+  # Expected layout:
+  #   lol_dataset/our485/low/   ← training low-light images
+  #   lol_dataset/our485/high/  ← training ground-truth images
+  #   lol_dataset/eval15/low/   ← evaluation low-light images
+  #   lol_dataset/eval15/high/  ← evaluation ground-truth images
+  lol_root: "data/lol_dataset"
+
+  # Additional training data directories.
+  # Set to null to use LOL only.
+  # Expected layout:
+  #   additional_dataset/low/   ← additional low-light images
+  #   additional_dataset/high/  ← additional ground-truth images
+  add_low:  "data/additional_dataset/low"
+  add_high: "data/additional_dataset/high"
+
+  # Extra training data directories (list of lists).
+  # Set to null to use Default dataset (LOL+Additional) only.
+  # Example:
+  #   custom_low:  ["data/custom/low"]
+  #   custom_high: ["data/custom/high"]
+  custom_low:  null
+  custom_high: null
+
+  # Resize all images to (H, W) before feeding into the model.
+  # Must match the input_shape used when building the model.
+  target_size: [200, 300]
+
+  # Fraction of training data held out for validation.
+  val_split: 0.1
+
+# ------------------------------------------------------------
+# Model
+# ------------------------------------------------------------
+model:
+  # Number of filters in the first encoder stage.
+  # Doubles each stage: 32 → 64 → 128 → 256 → bottleneck 512
+  base_filters: 32
+
+# ------------------------------------------------------------
+# Training
+# ------------------------------------------------------------
+training:
+  epochs:         1000
+  batch_size:     32
+
+  # Adam optimiser
+  learning_rate:  0.00001   # 1e-5
+  beta_2:         0.99
+
+  # Callbacks
+  early_stopping_patience: 150  # epochs without val_loss improvement
+  reduce_lr_patience:       75  # epochs before halving lr
+
+# ------------------------------------------------------------
+# Output paths
+# ------------------------------------------------------------
+output:
+  checkpoint_dir: "checkpoints"
+  figures_dir:    "assets/figures"
