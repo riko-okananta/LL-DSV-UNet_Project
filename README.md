@@ -37,7 +37,7 @@
 ---
 ## Result LL-DSV-UNet on LOL Eval15 (Against the Baseline Model)
 <p align="center">
-  <img src="assets/results/eval_grid.png" alt="Enhancement results" width="800"/>
+  <img src="assets/results/Screenshot (122).png" alt="Enhancement results" width="800"/>
 </p>
 
 | Method | PSNR (dB) ↑ | SSIM ↑ | LPIPS ↓ |
